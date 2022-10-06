@@ -6,6 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @OA\Info(
+ *  version="1.0.0",
+ *  title="Alex Challenge Application API",
+ * )
+ */
 class BaseController extends Controller
 {
     public function withSuccess(array $payload, int $status = Response::HTTP_OK): JsonResponse

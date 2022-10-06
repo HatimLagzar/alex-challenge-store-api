@@ -12,6 +12,22 @@ use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\Get(
+ *     path="/api/products/{id}",
+ *     description="Find a product and return it",
+ *     @OA\Parameter(
+ *         name="id",
+ *         description="ID of product",
+ *         in = "path",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *     @OA\Response(response="default", description="Return the product details")
+ * )
+ */
 class GetProductController extends BaseController
 {
     private ProductService $productService;

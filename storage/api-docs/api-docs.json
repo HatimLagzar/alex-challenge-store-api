@@ -1,0 +1,71 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Alex Challenge Application API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/products/{id}": {
+            "get": {
+                "description": "Find a product and return it",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Return the product details"
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a product",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID of product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Message of success when the product is deleted."
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "description": "List of products paginated",
+                "responses": {
+                    "default": {
+                        "description": "List of products paginated."
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new product and return it",
+                "requestBody": {
+                    "request": "CreateProductRequest",
+                    "required": true
+                },
+                "responses": {
+                    "default": {
+                        "description": "A message of success and the product details"
+                    }
+                }
+            }
+        }
+    }
+}

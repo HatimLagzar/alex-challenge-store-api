@@ -12,6 +12,22 @@ use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * @OA\DELETE (
+ *     path="/api/products/{id}",
+ *     description="Delete a product",
+ *     @OA\Parameter(
+ *         name="id",
+ *         description="ID of product",
+ *         in = "path",
+ *         required=true,
+ *         @OA\Schema(
+ *             type="string"
+ *         )
+ *     ),
+ *     @OA\Response(response="default", description="Message of success when the product is deleted.")
+ * )
+ */
 class DestroyController extends BaseController
 {
     private DeleteProductService $deleteProductService;

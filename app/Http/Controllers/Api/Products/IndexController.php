@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
+/**
+ * @OA\Get (
+ *     path="/api/products",
+ *     description="List of products paginated",
+ *     @OA\Response(response="default", description="List of products paginated.")
+ * )
+ */
 class IndexController extends BaseController
 {
     private ProductService $productService;
