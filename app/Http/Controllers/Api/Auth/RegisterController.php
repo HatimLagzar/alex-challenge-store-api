@@ -44,7 +44,7 @@ class RegisterController extends BaseController
                 'email'         => $request->input('email'),
             ]);
 
-            return $this->withError('Internal error occurred while registering, please retry later!');
+            return $this->withError('Error occurred, please retry later!');
         }
     }
 }

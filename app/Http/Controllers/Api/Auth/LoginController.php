@@ -27,7 +27,7 @@ class LoginController extends BaseController
     public function __invoke(LoginRequest $request): JsonResponse
     {
         try {
-            $email = filter_var($request->input('email'), FILTER_SANITIZE_EMAIL);
+            $email = $request->input('email');
             $password = $request->input('password');
 
             $user = $this->userService->findByEmail($email);
@@ -46,11 +46,9 @@ class LoginController extends BaseController
         } catch (Throwable $e) {
             Log::error('failed to login', [
                 'error_message' => $e->getMessage(),
-                'error_trace'   => $e->getTraceAsString(),
-                'email'         => $request->input('email'),
             ]);
 
-            return $this->withError('Internal error occurred while trying to login, retry later!');
+            return $this->withError('Error occurred, please retry later!');
         }
     }
 }
