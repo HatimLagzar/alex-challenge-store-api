@@ -4,9 +4,9 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RefreshController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\VerifyController;
+use App\Http\Controllers\Api\Products\DestroyController as DeleteProductController;
 use App\Http\Controllers\Api\Products\GetProductController;
 use App\Http\Controllers\Api\Products\IndexController as ProductsIndexController;
-use App\Http\Controllers\Api\Products\DestroyController as DeleteProductController;
 use App\Http\Controllers\Api\Products\StoreController as CreateProductController;
 use App\Http\Controllers\Api\Products\UpdateController as UpdateProductController;
 use Illuminate\Support\Facades\Route;
@@ -24,18 +24,27 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
-Route::get('/email/verify/{id}/{hash}', VerifyController::class);
+Route::get('/email/verify/{id}/{hash}', VerifyController::class)->name('verification.verify');
 
 Route::middleware(['auth:api'])
     ->group(function () {
         Route::post('refresh', RefreshController::class);
     });
 
+Route::middleware(['auth'])
+    ->group(function () {
+        Route::post('refresh', RefreshController::class);
+
+        Route::prefix('products')
+            ->group(function () {
+                Route::post('/', CreateProductController::class);
+                Route::post('{product}', UpdateProductController::class);
+                Route::delete('{product}', DeleteProductController::class);
+            });
+    });
+
 Route::prefix('products')
     ->group(function () {
         Route::get('/', ProductsIndexController::class);
         Route::get('{product}', GetProductController::class);
-        Route::post('/', CreateProductController::class);
-        Route::post('{product}', UpdateProductController::class);
-        Route::delete('{product}', DeleteProductController::class);
     });
