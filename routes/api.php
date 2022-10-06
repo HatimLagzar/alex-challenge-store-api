@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RefreshController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\VerifyController;
 use App\Http\Controllers\Api\Products\GetProductController;
 use App\Http\Controllers\Api\Products\IndexController as ProductsIndexController;
 use App\Http\Controllers\Api\Products\DestroyController as DeleteProductController;
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', RegisterController::class);
 Route::post('login', LoginController::class);
+Route::get('/email/verify/{id}/{hash}', VerifyController::class);
+
 Route::middleware(['auth:api'])
     ->group(function () {
         Route::post('refresh', RefreshController::class);

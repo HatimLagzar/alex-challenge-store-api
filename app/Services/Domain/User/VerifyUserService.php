@@ -20,7 +20,7 @@ class VerifyUserService
      */
     public function verify(User $user, string $token): bool
     {
-        if ($user->verification_token !== $token) {
+        if ($user->getVerificationToken() !== $token) {
             throw new InvalidTokenException();
         }
 

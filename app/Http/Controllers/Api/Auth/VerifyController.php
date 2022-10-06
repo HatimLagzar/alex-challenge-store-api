@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Core\User\UserService;
 use App\Services\Domain\User\Exceptions\InvalidTokenException;
 use App\Services\Domain\User\VerifyUserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-class VerifyController extends Controller
+class VerifyController extends BaseController
 {
     private UserService $userService;
     private VerifyUserService $verifyUserService;
@@ -21,32 +24,29 @@ class VerifyController extends Controller
         $this->verifyUserService = $verifyUserService;
     }
 
-    public function __invoke(int $id, string $token)
+    public function __invoke(int $id, string $token): JsonResponse
     {
         try {
             $user = $this->userService->findById($id);
             if (!$user instanceof User) {
-                return redirect('/login')
-                    ->with('error', 'User not found.');
+                return $this->withError('User not found!', Response::HTTP_NOT_FOUND);
             }
 
             $this->verifyUserService->verify($user, $token);
 
-            return redirect('/')
-                ->with('success', 'Account has been verified successfully.');
+            return $this->withSuccess([
+                'message' => 'Account has been verified successfully.'
+            ]);
         } catch (InvalidTokenException $e) {
-            return redirect('/login')
-                ->with('error', 'Token mismatch!');
+            return $this->withError('Token mismatch!', Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (Throwable $e) {
             Log::error('failed to verify user email', [
                 'error_message' => $e->getMessage(),
-                'error_trace' => $e->getTraceAsString(),
-                'user_id' => $id,
-                'token' => $token,
+                'user_id'       => $id,
+                'token'         => $token,
             ]);
 
-            return redirect('/login')
-                ->with('error', 'Failed to verify your email, our team is notified please retry later!');
+            return $this->withError('Error occurred, please retry later!');
         }
     }
 }
